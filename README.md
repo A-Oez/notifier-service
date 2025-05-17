@@ -1,66 +1,18 @@
-# notifier-service
+# Notifier Service 🚀
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+A lightweight REST API built with Quarkus that acts as a centralized notification system.
+It is currently used in IoT and smart home projects within a private local network. 🔔
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+**Currently Supported:**
+- Pushover
 
-## Running the application in dev mode
+## Installation
 
-You can run your application in dev mode that enables live coding using:
-
-```shell script
-./gradlew quarkusDev
-```
-
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
-
-## Packaging and running the application
-
-The application can be packaged using:
-
-```shell script
-./gradlew build
-```
-
-It produces the `quarkus-run.jar` file in the `build/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `build/quarkus-app/lib/` directory.
-
-The application is now runnable using `java -jar build/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-
-```shell script
-./gradlew build -Dquarkus.package.jar.type=uber-jar
-```
-
-The application, packaged as an _über-jar_, is now runnable using `java -jar build/*-runner.jar`.
-
-## Creating a native executable
-
-You can create a native executable using:
-
-```shell script
-./gradlew build -Dquarkus.native.enabled=true
-```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
-
-```shell script
-./gradlew build -Dquarkus.native.enabled=true -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./build/notifier-service-1.0.0-runner`
-
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/gradle-tooling>.
-
-## Related Guides
-
-- REST ([guide](https://quarkus.io/guides/rest)): A Jakarta REST implementation utilizing build time processing and Vert.x. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it.
-
-## Provided Code
-
-### REST
-
-Easily start your REST Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/A-Oez/notifier-service.git
+   cd notifier-service
+   
+2. **API KEY**
+    - A valid Pushover API token and User key  
+      *(Get them from the [Pushover Dashboard](https://pushover.net/) and set them up in your `.env` file – see `.env.example`.)*
