@@ -24,10 +24,13 @@ public class PushoverController {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response sendNotification(PushoverNotification.BasicMessage body) {
+    public Response sendNotification(PushoverNotification body) {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            String jsonBody = mapper.writeValueAsString(PushoverNotification.toRequestBody(body, envService));
+            String jsonBody = mapper.writeValueAsString(PushoverRequest.builder(envService)
+                            .title(body.title())
+                            .message(body.message())
+                            .build());
 
             HttpClient client = HttpClient.newHttpClient();
 
@@ -50,4 +53,10 @@ public class PushoverController {
                     .build();
         }
     }
+
+    private record PushoverNotification(
+            String title,
+            String message
+    ) {}
+
 }
