@@ -7,16 +7,16 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 public class EnvService {
 
     @ConfigProperty(name = "API_KEY")
-    String API_KEY;
+    private String apiKey;
 
     @ConfigProperty(name = "USER_KEY")
-    String USER_KEY;
+    private String userKey;
 
-    public String getAPI() {
-        return API_KEY;
+    public String getApiKey() {
+        return apiKey;
     }
 
-    public String getUSER() {
-        return USER_KEY;
+    public String getUserKey() {
+        return userKey;
     }
 }
