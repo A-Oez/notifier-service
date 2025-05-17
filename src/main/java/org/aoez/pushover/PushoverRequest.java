@@ -1,24 +1,52 @@
 package org.aoez.pushover;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.aoez.EnvService;
 
 
 public class PushoverRequest {
+    @JsonProperty("title")
     private final String title;
+
+    @JsonProperty("message")
     private final String message;
+
+    @JsonProperty("token")
     private final String token;
+
+    @JsonProperty("user")
     private final String user;
 
+    @JsonProperty("device")
     private final String device;
+
+    @JsonProperty("html")
     private final Boolean html;
+
+    @JsonProperty("priority")
     private final Integer priority;
+
+    @JsonProperty("sound")
     private final String sound;
+
+    @JsonProperty("timestamp")
     private final Long timestamp;
+
+    @JsonProperty("ttl")
     private final Integer ttl;
+
+    @JsonProperty("url")
     private final String url;
+
+    @JsonProperty("url_title")
     private final String urlTitle;
+
+    @JsonProperty("attachment_base64")
     private final String attachmentBase64;
+
+    @JsonProperty("attachment_type")
     private final String attachmentType;
+
 
     private PushoverRequest(Builder builder) {
         this.title = builder.title;
