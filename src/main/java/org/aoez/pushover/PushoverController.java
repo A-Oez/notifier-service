@@ -2,11 +2,12 @@ package org.aoez.pushover;
 
 
 import jakarta.inject.Inject;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
@@ -20,7 +21,19 @@ public class PushoverController { //https://pushover.net/api
     PushoverService service;
 
     @POST
+    @Tag(name = "Pushover Controller", description = "Endpoints zum Senden von Pushover-Benachrichtigungen")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+            summary = "Send Notification",
+            description = "Receives a PushoverNotification object, formats it as JSON, and sends the notification via the external Pushover service."
+    )
+    @APIResponse(
+            responseCode = "200"
+    )
+    @APIResponse(
+            responseCode = "500",
+            description = "INTERNAL_SERVER_ERROR – Error while forwarding request to pushover."
+    )
     public Response sendNotification(PushoverService.PushoverNotification body) {
         try {
             String jsonBody = service.createRequestJson(body);

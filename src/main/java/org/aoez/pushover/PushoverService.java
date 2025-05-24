@@ -2,9 +2,11 @@ package org.aoez.pushover;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.smallrye.common.constraint.NotNull;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.aoez.EnvService;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 import java.io.IOException;
 import java.net.URI;
@@ -51,43 +53,47 @@ public class PushoverService {
         return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
+    @Schema(description = "A notification message to be sent via Pushover.")
     public record PushoverNotification(
+
+            @NotNull
+            @Schema(description = "Title of the notification.", example = "System Alert", required = true)
             String title,
 
-            // The actual message that is delivered to the recipient.
+            @NotNull
+            @Schema(description = "Main message content delivered to the recipient.", example = "The server is down.", required = true)
             String message,
 
-            // Optional: The specific device to which the message should be sent.
-            // Used when the recipient has multiple devices and you want to ensure targeted delivery.
+            @Schema(description = "Target device name. If set, the notification is sent to this specific device.", example = "Pixel-7", required = false)
             String device,
 
-            // Optional: Flag indicating whether the message text should be interpreted as HTML (true) or as plain text (false).
+            @Schema(description = "Whether the message should be rendered as HTML. If false, plain text is used.", example = "true", required = false)
             Boolean html,
 
-            // Optional: The priority level of the message. Values typically range from -2 to 2,
-            // where higher values indicate that the message is more urgent (e.g., emergency messages).
+            @Schema(description = "Priority level (-2 to 2). Higher values mean more urgent messages. Defaults to 0.", example = "1", required = false)
             Integer priority,
 
-            // Optional: The name of a specific sound to be played when the message is received.
+            @Schema(description = "Name of the notification sound to be played on receipt.", example = "magic", required = false)
             String sound,
 
-            // Optional: A UNIX timestamp indicating when the message was created or when it should be displayed.
+            @Schema(description = "UNIX timestamp indicating when the message was created or scheduled.", example = "1716531740", required = false)
             Long timestamp,
 
-            // Optional: The "time to live" in seconds – indicates how long the message remains valid before it expires.
+            @Schema(description = "Time-to-live in seconds. Defines how long the message is valid.", example = "3600", required = false)
             Integer ttl,
 
-            // Optional: A URL that can be embedded in the notification so that the recipient can access it.
+            @Schema(description = "A URL to be included in the message for reference.", example = "https://status.myapp.com", required = false)
             String url,
 
-            // Optional: A title or description that is displayed with the URL.
+            @Schema(description = "Title for the embedded URL.", example = "View Status Page", required = false)
             String urlTitle,
 
-            // Optional: An attachment (e.g., an image or file). This is provided as a Base64-encoded string.
+            @Schema(description = "Base64-encoded content of an attachment (e.g., image or file).", required = false)
             String attachmentBase64,
 
-            // Optional: The MIME type of the attachment, to specify, for example, whether it is an image, video, etc.
+            @Schema(description = "MIME type of the attachment (e.g., image/png, video/mp4).", example = "image/png", required = false)
             String attachmentType
+
     ) {}
 
 }
