@@ -5,22 +5,24 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
-import org.aoez.pushover.PushOverException;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Provider
-public class GlobalExceptionMapper implements ExceptionMapper<Throwable> {
+public class GlobalThrowableMapper implements ExceptionMapper<Throwable> {
+
+    private static final Logger LOGGER = Logger.getLogger(GlobalThrowableMapper.class.getName());
+
 
     @Override
     public Response toResponse(Throwable exception) {
+        if (exception instanceof Error error) {
+            LOGGER.log(Level.SEVERE, "Critical error: " + error.getClass().getSimpleName(), error);
+            throw error;
+        }
 
         int statusCode = 500;
-
-        if(exception instanceof PushOverException pushEx) {
-            return pushEx.getResponse();
-        }
 
         if (exception instanceof WebApplicationException webEx) {
             statusCode = webEx.getResponse().getStatus();
@@ -44,7 +46,7 @@ public class GlobalExceptionMapper implements ExceptionMapper<Throwable> {
                 exception.getClass().getSimpleName(),
                 exception.getMessage()
         );
-        Logger.getLogger(GlobalExceptionMapper.class.getName())
-                .log(Level.SEVERE, errorMessage, exception);
+
+        LOGGER.log(Level.SEVERE, errorMessage, exception);
     }
 }
