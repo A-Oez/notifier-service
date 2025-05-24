@@ -14,25 +14,26 @@ import java.net.http.HttpResponse;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@Path("/pushover")
-public class PushoverController { //https://pushover.net/api
+@Path("/api/pushover")
+@Tag(name = "Pushover Notification", description = "Endpoint for dispatching Pushover messages. - https://pushover.net/api")
+public class PushoverController {
 
     @Inject
     PushoverService service;
 
     @POST
-    @Tag(name = "Pushover Controller", description = "Endpoints zum Senden von Pushover-Benachrichtigungen")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(
             summary = "Send Notification",
-            description = "Receives a PushoverNotification object, formats it as JSON, and sends the notification via the external Pushover service."
+            description = "Receives a PushoverNotification object, formats it as JSON, and sends it to the external Pushover service."
     )
     @APIResponse(
-            responseCode = "200"
+            responseCode = "200",
+            description = "OK – Notification was successfully sent."
     )
     @APIResponse(
             responseCode = "500",
-            description = "INTERNAL_SERVER_ERROR – Error while forwarding request to pushover."
+            description = "INTERNAL_SERVER_ERROR – An error occurred while forwarding the request to the Pushover service."
     )
     public Response sendNotification(PushoverService.PushoverNotification body) {
         try {
