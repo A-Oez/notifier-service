@@ -5,8 +5,8 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
+import org.aoez.pushover.PushOverException;
 
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,6 +18,10 @@ public class GlobalExceptionMapper implements ExceptionMapper<Throwable> {
 
         int statusCode = 500;
 
+        if(exception instanceof PushOverException pushEx) {
+            return pushEx.getResponse();
+        }
+
         if (exception instanceof WebApplicationException webEx) {
             statusCode = webEx.getResponse().getStatus();
         }
@@ -27,13 +31,12 @@ public class GlobalExceptionMapper implements ExceptionMapper<Throwable> {
 
         //exception to client
         return Response.status(statusCode)
-                .entity(Map.of(
-                        "error", exception.getClass().getSimpleName(),
-                        "message", exception.getMessage()
-                ))
+                .entity(new ClientErrResponse(statusCode, exception.getMessage()))
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }
+
+    public record ClientErrResponse(int status, String message){}
 
     private void log(Throwable exception){
         String errorMessage = String.format(

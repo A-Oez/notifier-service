@@ -1,7 +1,6 @@
 package org.aoez.pushover;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -12,8 +11,6 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Path("/api/pushover")
 @Tag(name = "Pushover Notification", description = "Endpoint for dispatching Pushover messages. - https://pushover.net/api")
