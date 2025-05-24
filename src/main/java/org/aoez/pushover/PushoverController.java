@@ -1,6 +1,7 @@
 package org.aoez.pushover;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -35,21 +36,12 @@ public class PushoverController {
             responseCode = "500",
             description = "INTERNAL_SERVER_ERROR – An error occurred while forwarding the request to the Pushover service."
     )
-    public Response sendNotification(PushoverService.PushoverNotification body) {
-        try {
-            String jsonBody = service.createRequestJson(body);
-            HttpResponse<String> response = service.executeRequest(jsonBody);
+    public Response sendNotification(PushoverService.PushoverNotification body) throws IOException, InterruptedException {
+        String jsonBody = service.createRequestJson(body);
+        HttpResponse<String> response = service.executeRequest(jsonBody);
 
-            return Response.status(response.statusCode())
-                    .entity(response.body())
-                    .build();
-        } catch (IOException | InterruptedException e) {
-            Logger.getLogger(PushoverController.class.getName())
-                    .log(Level.SEVERE, "Error sending notification", e);
-
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Error sending notification: " + e.getMessage())
-                    .build();
-        }
+        return Response.status(response.statusCode())
+                .entity(response.body())
+                .build();
     }
 }
